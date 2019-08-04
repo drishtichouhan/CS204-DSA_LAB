@@ -2,7 +2,9 @@
 using namespace std;
 int main()
 {
-
+   long long int t,h;
+   for(h=0;h<t;h++)
+   {
     int i,j,tmp;
     string str1,str2;
     cin>>str1;
@@ -46,5 +48,6 @@ int main()
     {
        cout<<pro[i];
     }
+   }
     return 0;
 }
