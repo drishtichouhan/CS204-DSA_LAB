@@ -50,10 +50,14 @@ string SUMALGO(string arr1, string arr2)
   
 int main() 
 { 
-    string str1,str2;
+    int t,i;
+    for(i=0;i<t;i++)
+    {
+      
+       string str1,str2;
     
-    cin>>str1;
-    cin>>str2;
-    cout << SUMALGO(str1, str2); 
-    return 0; 
-} 
+        cin>>str1;
+        cin>>str2;
+        cout << SUMALGO(str1, str2); 
+        return 0; 
+}     
