@@ -69,13 +69,17 @@ string subtraction(string str1, string str2)
  
 int main() 
 { 
-    string num1,num2;
+    cin>>t;
+    for(i=0;i<t;i++)
+    {
+       string num1,num2;
     
-    cin>>num1;
+       cin>>num1;
     
-    cin>>num2;
+        cin>>num2;
     
-    cout << subtraction(num1, num2) << endl; 
+         cout << subtraction(num1, num2) << endl; 
+    }
       
     
     
