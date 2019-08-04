@@ -51,8 +51,7 @@ string SUMALGO(string arr1, string arr2)
 int main() 
 { 
     string str1,str2;
-    cout<<"Enter the first string";
-    cout<<"Enter the second string";
+    
     cin>>str1;
     cin>>str2;
     cout << SUMALGO(str1, str2); 
