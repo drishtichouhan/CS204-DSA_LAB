@@ -69,6 +69,7 @@ string subtraction(string str1, string str2)
  
 int main() 
 { 
+    long long int t,i;
     cin>>t;
     for(i=0;i<t;i++)
     {
