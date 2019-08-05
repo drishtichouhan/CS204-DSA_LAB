@@ -74,7 +74,7 @@ void del_FUNC3(struct Node** str, int x1 , int y1)
   int a=temp->x;
   int b=temp->y;
   float dist=sqrt((a*a)+(b*b));
-  if(dist<=d)cout<<temp->x<<temp->y;
+  if(dist<=d)cout<<(temp->x)<<(temp->y);
   else temp=temp->ptr;
  }
   
@@ -116,54 +116,45 @@ int main()
  {
   int ip;
   cin>>ip;
-  switch(ip)
+  if(ip==1)
   {
-  
- 	 
-	case 1:
-        {
-		int x,y;
-		cin>>x>>y;
-		addStart_FUNC1(&str,x,y);
-    		break;
-        }
-	case 2:
-	{
-		deleteStart_FUNC2(&str);
-		break;
-	}
-	case 3:
-	{  
-           int a,b;
-           cin>>a>>b;		
-	   del_FUNC3(&str,a,b);
-	   break;	
-	case 4:
-	{
-		float d;
-		cin>>d;
-		search_by_distance_FUNC4(&str,d);
-		break;
-	}
-	case 5:
-	{
-		int a ,b;
-		cin>>a>>b;	
-		search_FUNC5(&str,a,b);
-		break;
-	}
-	case 6:
-	{
-		length(&str);
-		break;
-	}
-   }
-   
+	  int a,b;
+	  cin>>a>>b;
+	  addStart_FUNC1(&str,a,b);
+  }
+  if(ip==2)
+  {
+	deleteStart_FUNC2(&str);
+  }
+  if(ip==3)
+  {
+	 int a,b;
+	  cin>>a>>b;
+	  del_FUNC3(&str,a,b);
+  }
+  if(ip==4)
+  {
+	  float d;
+	  cin>>d;
+	  search_by_distance_FUNC4(&str,a,b);
+  }
+  if(ip==5)
+  {
+	  int a,b;
+	  cin>>a>>b;
+	  search_FUNC5(&str,a,b);
+  }
+  if(ip==6)
+  {
+	length(&str);
+  }
  }
  return 0;
-
 }
-   
+	 
+  
+	 
+	  
    
    
  
