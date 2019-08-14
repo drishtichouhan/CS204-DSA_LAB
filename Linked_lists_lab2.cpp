@@ -53,30 +53,33 @@ void Del(struct Node** str, int x1 , int y1)
     temp=temp->ptr;
   }
   if(temp==*str){
-      cout<<"Successfully Deleted";
+
       DelFirst(str);
       return;
   }
   if(temp==NULL){
-      cout<<"Nothing to delete";
+      cout<<"-1";
       return;
   }
-  cout<<"Successfully Deleted";
+
   prev->ptr=temp->ptr;
   free(temp);
-  
+
 }
 
 void Search_D(struct Node** str ,float d)
 {
     struct Node* temp;
     temp=*str;
+    int cnt=0;
 	while(temp!=NULL)
 	{
+
 		int dist=(temp->x)*(temp->x)+(temp->y)*(temp->y);
-		if(dist<=d*d){cout<<"("<<temp->x<<", "<<temp->y<<") ";}
+		if(dist<=d*d){cnt=cnt+1;}
 		temp=temp->ptr;
 	}
+  cout<<cnt;
 }
 int search_xy(struct Node** str ,int x1, int y1)
 {
@@ -88,7 +91,7 @@ int search_xy(struct Node** str ,int x1, int y1)
   temp=temp->ptr;
  }
   if(temp==NULL)return 0;
-  
+
 }
 int length(struct Node** str)
 {
