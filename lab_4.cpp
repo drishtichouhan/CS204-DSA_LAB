@@ -3,22 +3,15 @@
 #include <bits/stdc++.h>
 #define longI long long int
 
-#define mod 1000000007
-#pragma GCC optimize ("-O2")
-#define mod2 998244353
-#define MAXN 1000000000
-#define v32 vector<int>
-#define v64 vector<lli>
-#define v1024 vector <vector <int>>
-#define v4096 vector <vector <lli>>
-#define vt vector
-#define f(x, y, z) for (lli x = y; x < z; x++)
-#define fd(x, y, z) for (lli x = y; x > z; x--)
-#define lb lower_bound
-#define ld long double
+
+
+
+
+
+
 
 #define fastio ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0)
-#define ist insert
+
 
 using namespace std;
 
@@ -61,7 +54,7 @@ int Precedence(string arr)
     else
     return -1;
 }
-vector<string> IN_to_PO(vector<string> temp)
+vector<string> INFIX_to_POSTFIX(vector<string> temp)
 {
     stack<string> array;
     array.push("N");
@@ -123,19 +116,20 @@ longI EVALUATION(node *root)
    return stoi(s);
    else
    {
-     int lans=EVALUATION(root->LEFT),rans=EVALUATION(root->RIGHT);
+     int left= EVALUATION(root->LEFT);
+     int right=EVALUATION(root->RIGHT);
      if(s=="+")
-       result=lans+rans;
+       result=left+right;
      else if(s=="-")
-       result=lans-rans;
+       result=left-right;
      else if(s=="*")
-       result=lans*rans;
+       result=left*right;
      else if(s=="/")
-       result=lans/rans;
+       result=left/right;
      else
      {
        result=1;
-       for(longI=0;i<rans;i++)ans*=lans;
+       for(longI=0;i<right;i++)result*=left;
      }
    }
    return result;
@@ -143,7 +137,7 @@ longI EVALUATION(node *root)
 node* TREE_CONSTRUCT(vector <string> postfix)
 {
    node *root=NULL;
-   vt <node*> stk;
+   vector <node*> yolo;
    int i=0;
    while(i!=postfix.size())
    {
@@ -151,27 +145,27 @@ node* TREE_CONSTRUCT(vector <string> postfix)
        {
          node *temp=(node *)malloc(sizeof(node));
          temp->s=postfix[i];
-         f(j,0,postfix[i].size())
+         f(j=0,j<postfix[i].size(),j++)
          if(postfix[i][j]<'0' || postfix[i][j]>'9')return NULL;
-         stk.push_back(temp);
+         yolo.push_back(temp);
        }
      else
      {
-       if(stk.size()<2)return NULL;
-       node *s1=stk.back();
-       stk.pop_back();
-       node *s2=stk.back();
-       stk.pop_back();
+       if(yolo.size()<2)return NULL;
+       node *s1=yolo.back();
+       yolo.pop_back();
+       node *s2=yolo.back();
+       yolo.pop_back();
        node *temp=(node *)malloc(sizeof(node));
        temp->s=postfix[i];
        temp->LEFT=s2;
        temp->RIGHT=s1;
-       stk.push_back(temp);
+       yolo.push_back(temp);
      }
      i++;
    }
-   if(stk.size()!=1)return NULL;
-   return stk.back();
+   if(yolo.size()!=1)return NULL;
+   return yolo.back();
 }
 
 int main()
@@ -180,12 +174,14 @@ int main()
   int t;cin>>t;
   while(t--)
   {
-    int n;cin>>n;
-    for(longI=0;i<n;i++)
+    int n;
+    cin>>n;
+    for(longI i=0;i<n;i++)
     {
-      string s;cin>>s;
+      string s;
+      cin>>s;
       vector <string> converted=stringTovector(s);
-      converted=IN_to_PO(converted);
+      converted=INFIX_to_POSTFIX(converted);
       node* root=TREE_CONSTRUCT(converted);
       if(root!=NULL)
       cout<<EVALUATION(root)<<"\n";
