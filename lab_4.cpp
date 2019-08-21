@@ -73,12 +73,20 @@ vector<string> INFIX_to_POSTFIX(vector<string> temp)
         else{
             while(array.top() != "N" && Precedence(temp[i]) <= Precedence(array.top()))
             {
-                if(temp[i]=="^"&&array.top()=="^")break;
+              if(temp[i]!="^" && array.top()!="^"){
                 string c = array.top();
                 array.pop();
                 vec.push_back(c);
             }
-            array.push(temp[i]);
+            else{
+              break;
+            }
+          }
+            if(temp[i] == "^" && array.top()=="^"){
+            array.push(temp[i]);}
+            else{
+              array.push(temp[i]);
+            }
         }
 
     }
@@ -182,5 +190,3 @@ int main()
   }
   return 0;
 }
-
-  
