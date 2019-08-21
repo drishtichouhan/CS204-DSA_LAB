@@ -1,13 +1,5 @@
 #include <bits/stdc++.h>
 #define longI long long int
-
-
-
-
-
-
-
-
 #define fastio ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0)
 
 
@@ -61,7 +53,7 @@ vector<string> INFIX_to_POSTFIX(vector<string> temp)
     for(int i = 0; i < l; i++)
     {
         if((temp[i][0] >= '0' && temp[i][0] <= '9'))
-            vec.push_back(s[i]);
+            vec.push_back(temp[i]);
         else if(temp[i] == "(")
            array.push("(");
         else if(temp[i] == ")")
@@ -81,9 +73,10 @@ vector<string> INFIX_to_POSTFIX(vector<string> temp)
         else{
             while(array.top() != "N" && Precedence(temp[i]) <= Precedence(array.top()))
             {
+                if(temp[i]=="^"&&array.top()=="^")break;
                 string c = array.top();
                 array.pop();
-                vec.push_back(c);
+                vec.pushback(c);
             }
             array.push(temp[i]);
         }
@@ -143,7 +136,7 @@ node* TREE_CONSTRUCT(vector <string> postfix)
        {
          node *temp=(node *)malloc(sizeof(node));
          temp->s=postfix[i];
-         f(j=0,j<postfix[i].size(),j++)
+         for(longI j=0;j<postfix[i].size();j++)
          if(postfix[i][j]<'0' || postfix[i][j]>'9')return NULL;
          yolo.push_back(temp);
        }
@@ -179,7 +172,7 @@ int main()
     {
       string s;
       cin>>s;
-      vector <string> converted=stringTovector(s);
+      vector <string> converted=Convert_string_to_vector(s);
       converted=INFIX_to_POSTFIX(converted);
       node* root=TREE_CONSTRUCT(converted);
       if(root!=NULL)
