@@ -76,7 +76,7 @@ vector<string> INFIX_to_POSTFIX(vector<string> temp)
                 if(temp[i]=="^"&&array.top()=="^")break;
                 string c = array.top();
                 array.pop();
-                vec.pushback(c);
+                vec.push_back(c);
             }
             array.push(temp[i]);
         }
