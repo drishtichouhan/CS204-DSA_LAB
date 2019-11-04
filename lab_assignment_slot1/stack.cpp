@@ -1,19 +1,11 @@
 #include<iostream>
 #include<cstdlib>
 using namespace std;
-
-/*
- * Node Declaration
- */
 struct node
 {
     int info;
     struct node *link;
 }*top;
-
-/*
- * Class Declaration
- */
 class stack_list
 {
     public:
@@ -25,10 +17,6 @@ class stack_list
             top = NULL;
         }
 };
-
-/*
- * Main: Contains Menu
- */
 int main()
 {
     int choice, item;
@@ -79,10 +67,6 @@ node *stack_list::push(node *top, int item)
     top = tmp;
     return top;
 }
-
-/*
- * Pop Element from the Stack
- */
 node *stack_list::pop(node *top)
 {
     node *tmp;
@@ -97,10 +81,6 @@ node *stack_list::pop(node *top)
     }
     return top;
 }
-
-/*
- * Traversing the Stack
- */
 void stack_list::traverse(node *top)
 {
     node *ptr;
