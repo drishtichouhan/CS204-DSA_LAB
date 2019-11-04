@@ -14,6 +14,56 @@ class node
     node *left;  
     node *right;  
 };  
+void inorder(node *root) 
+{ 
+    if (root != NULL) 
+    { 
+        inorder(root->left); 
+        cout<<root->key; 
+        inorder(root->right); 
+    } 
+}
+
+node* deleteNode(node* root, int key) 
+{ 
+    // base case 
+    if (root == NULL) return root; 
+  
+    
+    if (key < root->key) 
+        root->left = deleteNode(root->left, key); 
+  
+    
+    else if (key > root->key) 
+        root->right = deleteNode(root->right, key); 
+  
+    
+    else
+    { 
+        
+        if (root->left == NULL) 
+        { 
+            node *temp = root->right; 
+            free(root); 
+            return temp; 
+        } 
+        else if (root->right == NULL) 
+        { 
+           node *temp = root->left; 
+            free(root); 
+            return temp; 
+        } 
+  
+        
+        struct node* temp = minValueNode(root->right); 
+  
+        root->key = temp->key; 
+  
+        
+        root->right = deleteNode(root->right, temp->key); 
+    } 
+    return root; 
+} 
   
 
 void convert(node* root, node** head, node** tail)  //This function converts the tree into a doubly linked list
