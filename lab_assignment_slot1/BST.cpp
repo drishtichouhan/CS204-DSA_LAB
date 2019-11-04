@@ -1,188 +1,324 @@
-//Find if there is a triplet in a BST that adds to zero
-
-//code:
-
-
-#include <bits/stdc++.h>
+# include <iostream>
+# include <cstdlib>
 using namespace std;
 
-
-class node
+struct node
+{
+    int info;
+    struct node *left;
+    struct node *right;
+}*root;
+class BST
 {
     public:
-    int key;
-    node *left;
-    node *right;
+        void find(int, node **, node **);
+        void insert(node *, node *);
+        void del(int);
+        void case_a(node *,node *);
+        void case_b(node *,node *);
+        void case_c(node *,node *);
+        void preorder(node *);
+        void inorder(node *);
+        void postorder(node *);
+        void display(node *, int);
+        BST()
+        {
+            root = NULL;
+        }
 };
-void inorder(node *root)
-{
-    if (root != NULL)
-    {
-        inorder(root->left);
-        cout<<root->key;
-        inorder(root->right);
-    }
-}
-
-node* deleteNode(node* root, int key)
-{
-    // base case
-    if (root == NULL) return root;
-
-
-    if (key < root->key)
-        root->left = deleteNode(root->left, key);
-
-
-    else if (key > root->key)
-        root->right = deleteNode(root->right, key);
-
-
-    else
-    {
-
-        if (root->left == NULL)
-        {
-            node *temp = root->right;
-            free(root);
-            return temp;
-        }
-        else if (root->right == NULL)
-        {
-           node *temp = root->left;
-            free(root);
-            return temp;
-        }
-
-
-        struct node* temp = minValueNode(root->right);
-
-        root->key = temp->key;
-
-
-        root->right = deleteNode(root->right, temp->key);
-    }
-    return root;
-}
-
-
-void convert(node* root, node** head, node** tail)  //This function converts the tree into a doubly linked list
-{
-
-    if (root == NULL)
-        return;
-
-
-    if (root->left)
-        convert(root->left, head, tail);
-
-
-    root->left = *tail;
-
-
-    if (*tail)
-        (*tail)->right = root;
-    else
-        *head = root;
-
-
-    *tail = root;
-
-
-    if (root->right)
-        convert(root->right, head, tail);
-}
-
-
-bool isPresent(node* head, node* tail, int sum)
-{
-    while (head != tail)
-    {
-        int curr = head->key + tail->key;
-        if (curr == sum)
-            return true;
-        else if (curr > sum)
-            tail = tail->left;
-        else
-            head = head->right;
-    }
-    return false;
-}
-
-
-bool isTripletPresent(node *root)
-{
-
-    if (root == NULL)
-    return false;
-
-
-    node* head = NULL;
-    node* tail = NULL;
-    convert(root, &head, &tail);
-
-
-    while ((head->right != tail) && (head->key < 0))
-    {
-
-        if (isPresent(head->right, tail, -1*head->key))
-            return true;
-        else
-            head = head->right;
-    }
-
-
-    return false;
-}
-
-
-node* newNode(int num)
-{
-    node* temp = new node();
-    temp->key = num;
-    temp->left = temp->right = NULL;
-    return temp;
-}
-
-
-void insert(node* temp, int key)
-{
-    queue<struct node*> q;
-    q.push(temp);
-    while (!q.empty()) {
-        node* temp = q.front();
-        q.pop();
-
-        if (!temp->left) {
-            temp->left = newNode(key);
-            break;
-        } else
-            q.push(temp->left);
-
-        if (!temp->right) {
-            temp->right = newNode(key);
-            break;
-        } else
-            q.push(temp->right);
-    }
-}
 int main()
 {
-    node* root = NULL;
-    int num;
-    cout<<"Enter the number of values:"<<"\n";
-    cin>>num;
-    cout<<"Enter values";
-    for(int i=0;i<num;i++)
-
+    int choice, num;
+    BST bst;
+    node *temp;
+    while (1)
     {
-    	int val;
-    	cin>>val;
-    	root=insert(root,val);
+        cout<<"-----------------"<<endl;
+        cout<<"Operations on BST"<<endl;
+        cout<<"-----------------"<<endl;
+        cout<<"1.Insert Element "<<endl;
+        cout<<"2.Delete Element "<<endl;
+        cout<<"3.Inorder Traversal"<<endl;
+        cout<<"4.Preorder Traversal"<<endl;
+        cout<<"5.Postorder Traversal"<<endl;
+        cout<<"6.Display"<<endl;
+        cout<<"7.Quit"<<endl;
+        cout<<"Enter your choice : ";
+        cin>>choice;
+        switch(choice)
+        {
+        case 1:
+            temp = new node;
+            cout<<"Enter the number to be inserted : ";
+	    cin>>temp->info;
+            bst.insert(root, temp);
+        case 2:
+            if (root == NULL)
+            {
+                cout<<"Tree is empty, nothing to delete"<<endl;
+                continue;
+            }
+            cout<<"Enter the number to be deleted : ";
+            cin>>num;
+            bst.del(num);
+            break;
+        case 3:
+            cout<<"Inorder Traversal of BST:"<<endl;
+            bst.inorder(root);
+            cout<<endl;
+            break;
+	case 4:
+            cout<<"Preorder Traversal of BST:"<<endl;
+            bst.preorder(root);
+            cout<<endl;
+            break;
+        case 5:
+            cout<<"Postorder Traversal of BST:"<<endl;
+            bst.postorder(root);
+            cout<<endl;
+            break;
+        case 6:
+            cout<<"Display BST:"<<endl;
+            bst.display(root,1);
+            cout<<endl;
+            break;
+        case 7:
+            exit(1);
+        default:
+            cout<<"Wrong choice"<<endl;
+        }
     }
-    if (isTripletPresent(root))
-        cout << "Present"<<"\n";
+}
+void BST::find(int item, node **par, node **loc)
+{
+    node *ptr, *ptrsave;
+    if (root == NULL)
+    {
+        *loc = NULL;
+        *par = NULL;
+        return;
+    }
+    if (item == root->info)
+    {
+        *loc = root;
+        *par = NULL;
+        return;
+    }
+    if (item < root->info)
+        ptr = root->left;
     else
-        cout << "Not Present"<<"\n";
-    return 0;
+        ptr = root->right;
+    ptrsave = root;
+    while (ptr != NULL)
+    {
+        if (item == ptr->info)
+        {
+            *loc = ptr;
+            *par = ptrsave;
+            return;
+        }
+        ptrsave = ptr;
+        if (item < ptr->info)
+            ptr = ptr->left;
+	else
+	    ptr = ptr->right;
+    }
+    *loc = NULL;
+    *par = ptrsave;
+}
+void BST::insert(node *tree, node *newnode)
+{
+    if (root == NULL)
+    {
+        root = new node;
+        root->info = newnode->info;
+        root->left = NULL;
+        root->right = NULL;
+        cout<<"Root Node is Added"<<endl;
+        return;
+    }
+    if (tree->info == newnode->info)
+    {
+        cout<<"Element already in the tree"<<endl;
+        return;
+    }
+    if (tree->info > newnode->info)
+    {
+        if (tree->left != NULL)
+        {
+            insert(tree->left, newnode);
+	}
+	else
+	{
+            tree->left = newnode;
+            (tree->left)->left = NULL;
+            (tree->left)->right = NULL;
+            cout<<"Node Added To Left"<<endl;
+            return;
+        }
+    }
+    else
+    {
+        if (tree->right != NULL)
+        {
+            insert(tree->right, newnode);
+        }
+        else
+        {
+            tree->right = newnode;
+            (tree->right)->left = NULL;
+            (tree->right)->right = NULL;
+            cout<<"Node Added To Right"<<endl;
+            return;
+        }
+    }
+}
+void BST::del(int item)
+{
+    node *parent, *location;
+    if (root == NULL)
+    {
+        cout<<"Tree empty"<<endl;
+        return;
+    }
+    find(item, &parent, &location);
+    if (location == NULL)
+    {
+        cout<<"Item not present in tree"<<endl;
+        return;
+    }
+    if (location->left == NULL && location->right == NULL)
+        case_a(parent, location);
+    if (location->left != NULL && location->right == NULL)
+        case_b(parent, location);
+    if (location->left == NULL && location->right != NULL)
+        case_b(parent, location);
+    if (location->left != NULL && location->right != NULL)
+        case_c(parent, location);
+    free(location);
+}
+void BST::case_a(node *par, node *loc )
+{
+    if (par == NULL)
+    {
+        root = NULL;
+    }
+    else
+    {
+        if (loc == par->left)
+            par->left = NULL;
+        else
+            par->right = NULL;
+    }
+}
+void BST::case_b(node *par, node *loc)
+{
+    node *child;
+    if (loc->left != NULL)
+        child = loc->left;
+    else
+        child = loc->right;
+    if (par == NULL)
+    {
+        root = child;
+    }
+    else
+    {
+        if (loc == par->left)
+            par->left = child;
+        else
+            par->right = child;
+    }
+}
+void BST::case_c(node *par, node *loc)
+{
+    node *ptr, *ptrsave, *suc, *parsuc;
+    ptrsave = loc;
+    ptr = loc->right;
+    while (ptr->left != NULL)
+    {
+        ptrsave = ptr;
+        ptr = ptr->left;
+    }
+    suc = ptr;
+    parsuc = ptrsave;
+    if (suc->left == NULL && suc->right == NULL)
+        case_a(parsuc, suc);
+    else
+        case_b(parsuc, suc);
+    if (par == NULL)
+    {
+        root = suc;
+    }
+    else
+    {
+        if (loc == par->left)
+            par->left = suc;
+        else
+            par->right = suc;
+    }
+    suc->left = loc->left;
+    suc->right = loc->right;
+}
+
+void BST::preorder(node *ptr)
+{
+    if (root == NULL)
+    {
+        cout<<"Tree is empty"<<endl;
+        return;
+    }
+    if (ptr != NULL)
+    {
+        cout<<ptr->info<<"  ";
+        preorder(ptr->left);
+        preorder(ptr->right);
+    }
+}
+
+void BST::inorder(node *ptr)
+{
+    if (root == NULL)
+    {
+        cout<<"Tree is empty"<<endl;
+        return;
+    }
+    if (ptr != NULL)
+    {
+        inorder(ptr->left);
+        cout<<ptr->info<<"  ";
+        inorder(ptr->right);
+    }
+}
+void BST::postorder(node *ptr)
+{
+    if (root == NULL)
+    {
+        cout<<"Tree is empty"<<endl;
+        return;
+    }
+    if (ptr != NULL)
+    {
+        postorder(ptr->left);
+        postorder(ptr->right);
+        cout<<ptr->info<<"  ";
+    }
+}
+void BST::display(node *ptr, int level)
+{
+    int i;
+    if (ptr != NULL)
+    {
+        display(ptr->right, level+1);
+        cout<<endl;
+        if (ptr == root)
+            cout<<"Root->:  ";
+        else
+        {
+            for (i = 0;i < level;i++)
+                cout<<"       ";
+	}
+        cout<<ptr->info;
+        display(ptr->left, level+1);
+    }
 }
