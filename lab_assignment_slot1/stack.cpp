@@ -1,62 +1,63 @@
-#include <bits/stdc++.h> 
+#include <bits/stdc++.h>
 using namespace std; 
-  
-
-stack<int> sort_Stack(stack<int> input) 
-{ 
-    stack<int> tmp; 
-  
-    while (!input.empty()) 
-    { 
-        
-        int temp = input.top(); 
-        input.pop(); 
-  
-        
-        while (!tmp.empty() && tmp.top() < temp)
-        { 
-            input.push(tmp.top()); 
-            tmp.pop(); 
-        } 
-  
-        
-        tmp.push(temp); 
-    } 
-  
-    return tmp; 
-} 
-  
-void sortArray(int arr[], int n) 
-{ 
-   
-    stack<int> input; 
-    for (int i=0; i<n; i++) 
-       input.push(arr[i]);
-
-    stack<int> tmpStack = sort_Stack(input);  
-    for (int i=0; i<n; i++) 
-    { 
-        arr[i] = tmpStack.top(); 
-        tmpStack.pop(); 
-    } 
-} 
-  
-
-int main() 
-{ 
-    cout<<"Enter no. of elements:"<<"\n";
-    int num;
-    cin>>num;
-
-    int arr[num];
-    cout<<"Enter elements"<<"\n";
-    for(int i=0;i<num;i++)cin>>arr[i];
-    int n = sizeof(arr)/sizeof(arr[0]); 
-  
-    sortArray(arr, n); 
-  
-    for (int i=0; i<n; i++) 
-       cout << arr[i] << " "; 
-  
-    return 0; 
+int stack[100], n=100, top=-1;
+void push(int val) {
+   if(top>=n-1)
+      cout<<"Stack Overflow"<<endl; 
+   else {
+      top++;
+      stack[top]=val;
+   }
+}
+void pop() {
+   if(top<=-1)
+      cout<<"Stack Underflow"<<endl;
+   else {
+      cout<<"The popped element is "<< stack[top] <<endl;
+      top--;
+   }
+}
+void display() {
+   if(top>=0) {
+      cout<<"Stack elements are:";
+      for(int i=top; i>=0; i--)
+         cout<<stack[i]<<" ";
+         cout<<endl;
+   } else
+      cout<<"Stack is empty";
+}
+int main() {
+   int ch, val; 
+   cout<<"1) Push in stack"<<endl;
+   cout<<"2) Pop from stack"<<endl;
+   cout<<"3) Display stack"<<endl;
+   cout<<"4) Exit"<<endl;
+   do {
+      cout<<"Enter choice: "<<endl;
+      cin>>ch;
+      switch(ch) {
+         case 1: {   
+            cout<<"Enter value to be pushed:"<<endl;
+            cin>>val;
+            push(val);
+            break;
+         }
+         case 2: {
+            pop();
+            break;
+         }
+         case 3: {
+            display();
+            break;
+         }
+         case 4: {
+            cout<<"Exit"<<endl;
+            break;
+         }
+         default: {
+            cout<<"Invalid Choice"<<endl;
+         }
+      }
+   }while(ch!=4); 
+      return 0;
 }
