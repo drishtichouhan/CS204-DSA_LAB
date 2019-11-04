@@ -1,188 +1,199 @@
-//Find if there is a triplet in a BST that adds to zero
-
-//code:
-
- 
-#include <bits/stdc++.h> 
-using namespace std; 
-  
-
-class node  
-{  
-    public: 
-    int key;  
-    node *left;  
-    node *right;  
-};  
-void inorder(node *root) 
-{ 
-    if (root != NULL) 
-    { 
-        inorder(root->left); 
-        cout<<root->key; 
-        inorder(root->right); 
-    } 
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+struct tree {
+    int info;
+    tree *Left, *Right;
+};
+tree* root;
+class Binary_tree {
+public:
+    Binary_tree();
+    void insert1(int);
+    tree* insert2(tree*, tree*);
+    void Delete(int);
+    void pretrav(tree*);
+    void intrav(tree*);
+    void posttrav(tree*);
+};
+Binary_tree::Binary_tree()
+{
+    root = NULL;
 }
-
-node* deleteNode(node* root, int key) 
-{ 
-    // base case 
-    if (root == NULL) return root; 
-  
-    
-    if (key < root->key) 
-        root->left = deleteNode(root->left, key); 
-  
-    
-    else if (key > root->key) 
-        root->right = deleteNode(root->right, key); 
-  
-    
-    else
-    { 
-        
-        if (root->left == NULL) 
-        { 
-            node *temp = root->right; 
-            free(root); 
-            return temp; 
-        } 
-        else if (root->right == NULL) 
-        { 
-           node *temp = root->left; 
-            free(root); 
-            return temp; 
-        } 
-  
-        
-        struct node* temp = minValueNode(root->right); 
-  
-        root->key = temp->key; 
-  
-        
-        root->right = deleteNode(root->right, temp->key); 
-    } 
-    return root; 
-} 
-  
-
-void convert(node* root, node** head, node** tail)  //This function converts the tree into a doubly linked list
-{  
-    
-    if (root == NULL)  
-        return;  
-  
-     
-    if (root->left)  
-        convert(root->left, head, tail);  
-  
-     
-    root->left = *tail;  
-  
-     
-    if (*tail)  
-        (*tail)->right = root;  
-    else
-        *head = root;  
-  
-    
-    *tail = root;  
-  
-    
-    if (root->right)  
-        convert(root->right, head, tail);  
-}  
-  
-
-bool isPresent(node* head, node* tail, int sum)  
-{  
-    while (head != tail)  
-    {  
-        int curr = head->key + tail->key;  
-        if (curr == sum)  
-            return true;  
-        else if (curr > sum)  
-            tail = tail->left;  
-        else
-            head = head->right;  
-    }  
-    return false;  
-}  
-  
-
-bool isTripletPresent(node *root)  
-{  
-     
-    if (root == NULL)  
-    return false;  
-  
-    
-    node* head = NULL;  
-    node* tail = NULL;  
-    convert(root, &head, &tail);  
-  
-     
-    while ((head->right != tail) && (head->key < 0))  
-    {  
-         
-        if (isPresent(head->right, tail, -1*head->key))  
-            return true;  
-        else
-            head = head->right;  
-    }  
-  
-    
-    return false;  
-}  
-  
- 
-node* newNode(int num)  
-{  
-    node* temp = new node();  
-    temp->key = num;  
-    temp->left = temp->right = NULL;  
-    return temp;  
-}  
-  
-  
-void insert(node* temp, int key) 
-{ 
-    queue<struct node*> q; 
-    q.push(temp);
-    while (!q.empty()) { 
-        node* temp = q.front(); 
-        q.pop(); 
-  
-        if (!temp->left) { 
-            temp->left = newNode(key); 
-            break; 
-        } else
-            q.push(temp->left); 
-  
-        if (!temp->right) { 
-            temp->right = newNode(key); 
-            break; 
-        } else
-            q.push(temp->right); 
-    } 
-} 
-int main()  
-{  
-    node* root = NULL; 
-    int num;
-    cout<<"Enter the number of values:"<<"\n";
-    cin>>num;
-    cout<<"Enter values";
-    for(int i=0;i<num;i++)
-
-    {
-    	int val;
-    	cin>>val;
-    	root=insert(root,val);
+tree* Binary_tree::insert2(tree* temp, tree* newnode)
+{
+    if (temp == NULL) {
+        temp = newnode;
     }
-    if (isTripletPresent(root))  
-        cout << "Present"<<"\n";  
-    else
-        cout << "Not Present"<<"\n";  
-    return 0;  
-} 
+    else if (temp->info < newnode->info) {
+        insert2(temp->Right, newnode);
+        if (temp->Right == NULL)
+            temp->Right = newnode;
+    }
+    else {
+        insert2(temp->Left, newnode);
+        if (temp->Left == NULL)
+            temp->Left = newnode;
+    }
+    return temp;
+}
+void Binary_tree::insert1(int n)
+{
+    tree *temp = root, *newnode;
+    newnode = new tree;
+    newnode->Left = NULL;
+    newnode->Right = NULL;
+    newnode->info = n;
+    root = insert2(temp, newnode);
+}
+void Binary_tree::pretrav(tree* t = root)
+{
+    if (root == NULL) {
+        cout << "Nothing to display";
+    }
+    else if (t != NULL) {
+        cout << t->info << " ";
+        pretrav(t->Left);
+        pretrav(t->Right);
+    }
+}
+void Binary_tree::intrav(tree* t = root)
+{
+    if (root == NULL) {
+        cout << "Nothing to display";
+    }
+    else if (t != NULL) {
+        intrav(t->Left);
+        cout << t->info << " ";
+        intrav(t->Right);
+    }
+}
+void Binary_tree::posttrav(tree* t = root)
+{
+    if (root == NULL) {
+        cout << "Nothing to display";
+    }
+    else if (t != NULL) {
+        posttrav(t->Left);
+        posttrav(t->Right);
+        cout << t->info << " ";
+    }
+}
+void Binary_tree::Delete(int key)
+{
+    tree *temp = root, *parent = root, *marker;
+    if (temp == NULL)
+        cout << "The tree is empty" << endl;
+    else {
+        while (temp != NULL && temp->info != key) {
+            parent = temp;
+            if (temp->info < key) {
+                temp = temp->Right;
+            }
+            else {
+                temp = temp->Left;
+            }
+        }
+    }
+    marker = temp;
+    if (temp == NULL)
+        cout << "No node present";
+    else if (temp == root) {
+        if (temp->Right == NULL && temp->Left == NULL) {
+            root = NULL;
+        }
+        else if (temp->Left == NULL) {
+            root = temp->Right;
+        }
+        else if (temp->Right == NULL) {
+            root = temp->Left;
+        }
+        else {
+            tree* temp1;
+            temp1 = temp->Right;
+            while (temp1->Left != NULL) {
+                temp = temp1;
+                temp1 = temp1->Left;
+            }
+            if (temp1 != temp->Right) {
+                temp->Left = temp1->Right;
+                temp1->Right = root->Right;
+            }
+            temp1->Left = root->Left;
+            root = temp1;
+        }
+    }
+    else {
+        if (temp->Right == NULL && temp->Left == NULL) {
+            if (parent->Right == temp)
+                parent->Right = NULL;
+            else
+                parent->Left = NULL;
+        }
+        else if (temp->Left == NULL) {
+            if (parent->Right == temp)
+                parent->Right = temp->Right;
+            else
+                parent->Left = temp->Right;
+        }
+        else if (temp->Right == NULL) {
+            if (parent->Right == temp)
+                parent->Right = temp->Left;
+            else
+                parent->Left = temp->Left;
+        }
+        else {
+            tree* temp1;
+            parent = temp;
+            temp1 = temp->Right;
+            while (temp1->Left != NULL) {
+                parent = temp1;
+                temp1 = temp1->Left;
+            }
+            if (temp1 != temp->Right) {
+                temp->Left = temp1->Right;
+                temp1->Right = parent->Right;
+            }
+            temp1->Left = parent->Left;
+            parent = temp1;
+        }
+    }
+    delete marker;
+}
+int main()
+{
+    Binary_tree bt;
+    int choice, n, key;
+    while (1) {
+        cout << "\n\t1. Insert\n\t2. Delete\n\t3. Preorder Traversal\n\t4. Inorder Treversal\n\t5. Postorder Traversal\n\t6. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch (choice) {
+        case 1:
+            cout << "Enter item: ";
+            cin >> n;
+            bt.insert1(n);
+            break;
+        case 2:
+            cout << "Enter element to delete: ";
+            cin >> key;
+            bt.Delete(key);
+            break;
+        case 3:
+            cout << endl;
+            bt.pretrav();
+            break;
+        case 4:
+            cout << endl;
+            bt.intrav();
+            break;
+        case 5:
+            cout << endl;
+            bt.posttrav();
+            break;
+        case 6:
+            exit(0);
+        }
+    }
+    return 0;
+}
