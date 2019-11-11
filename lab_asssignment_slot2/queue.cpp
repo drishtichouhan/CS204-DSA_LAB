@@ -6,13 +6,13 @@ class node
              class node *next;
              int data;
 };
- 
-class queue : public node
+
+class Queue : public node
 {
             node *head;
             int front,rare;
 	public:
-           queue()
+           Queue()
            	{
             	front=-1;
              	rare=-1;
@@ -43,7 +43,7 @@ class queue : public node
                         temp1->next=NULL;
                         temp1->data=x;
                     }  }
- 
+
            void display()
            	{
               node *temp;
@@ -78,9 +78,9 @@ class queue : public node
                 head=head->next;
                 }
 };
-main()
+int main()
 {
-	queue s1;
+	Queue s1;
 	int ch;
 	while(1)
       {
@@ -92,7 +92,7 @@ main()
                  	cout <<"\n enter a element";
                   	cin >> ch;
                    	s1.push(ch); break;
- 
+
             case 2: s1.pop();break;
             case 3: s1.display();break;
         	case 4: exit(0);
