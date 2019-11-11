@@ -1,108 +1,104 @@
-#include <bits/stdc++.h>
+#include<iostream>
+#include<conio.h>
+#include<stdlib.h>
 using namespace std;
-struct Node
+class node
 {
-    int f;
-    int r;
-    int s;
-    unsigned capacity;
-    int *arr;
+      public:
+             class node *next;
+             int data;
 };
-int isFull(Node *node)
+ 
+class queue : public node
 {
-    if (node->s == node->capacity)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-int isempty(Node *node)
+            node *head;
+            int front,rare;
+	public:
+           queue()
+           	{
+            	front=-1;
+             	rare=-1;
+             }
+           void push(int x)
+           	{
+            	if (rare < 0 )
+             		{
+               			head =new node;
+                  		head->next=NULL;
+                    	head->data=x;
+                     	rare ++;
+                     }
+             else
+                    {
+                    	node *temp,*temp1;
+                     	temp=head;
+                      	if(rare >= 4)
+                          {
+                          	cout <<"queue over flow";
+                           	return;
+                           }
+                        rare++;
+                        while(temp->next != NULL)
+                        	temp=temp->next;
+                        temp1=new node;
+                        temp->next=temp1;
+                        temp1->next=NULL;
+                        temp1->data=x;
+                    }  }
+ 
+           void display()
+           	{
+              node *temp;
+              temp=head;
+              if (rare < 0)
+                {
+                    cout <<" queue under flow";
+                    return;
+                 }
+              while(temp != NULL)
+               {
+               	   cout <<temp->data<< " ";
+                   temp=temp->next;
+                }
+             }
+             void pop()
+              {
+              	node *temp;
+               	temp=head;
+                if( rare < 0)
+                  {
+                  	cout <<"queue under flow";
+                   	return;
+                   }
+                if(front == rare)
+                  {
+                  	front = rare =-1;
+                   	head=NULL;
+                    return;
+                   }
+                front++;
+                head=head->next;
+                }
+};
+main()
 {
-    if (node->s == 0)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-Node *createq(unsigned capacity)
-{
-    Node *q = new Node();
-    q->capacity = capacity;
-    q->f = 0;
-    q->s = 0;
-    q->r = capacity - 1;
-    q->arr = new int[(q->capacity * sizeof(int))];
-    return q;
-}
-void enqueue(Node *que, int val)
-{
-    if (isFull(que))
-    {
-        return;
-    }
-    que->r = (que->r + 1) % que->capacity;
-    que->arr[que->r] = val;
-    que->s += 1;
-}
-int dequeue(Node *que)
-{
-    if (isempty(que))
-    {
-        return -1;
-    }
-    int item = que->arr[que->f];
-    que->f = (que->f + 1) % que->capacity;
-    que->s -= 1;
-    return item;
-}
-int getf(Node *node)
-{
-    if (isempty(node))
-    {
-        return INT_MIN;
-    }
-    return node->arr[node->f];
-}
-int getr(Node *node)
-{
-    if (isempty(node))
-    {
-        return INT_MIN;
-    }
-    return node->arr[node->r];
-}
-
-int main()
-{
-    Node *que = createq(1000);
-    int n;
-    cin >> n;
-
-    for (int i = 0; i < n; i++)
-    {
-        char c;
-        cin >> c;
-        if (c == 'E')
-        {
-            int l;
-            cin >> l;
-            enqueue(que, l);
-            cout << que->s << endl;
-        }
-        else
-        {
-
-            cout << dequeue(que) << " ";
-            cout << que->s << endl;
-        }
-    }
-
-    return 0;
+	queue s1;
+	int ch;
+	while(1)
+      {
+		cout <<"\n1.PUSH\n2.POP\n3.DISPLAY\n4.EXIT\n enter ru choice:";
+		cin >> ch;
+		switch(ch)
+		{
+            case 1:
+                 	cout <<"\n enter a element";
+                  	cin >> ch;
+                   	s1.push(ch); break;
+ 
+            case 2: s1.pop();break;
+            case 3: s1.display();break;
+        	case 4: exit(0);
+		  }
+       }
+return (0);
 }
